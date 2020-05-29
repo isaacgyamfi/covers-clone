@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,9 +8,11 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import { AuthContext } from '../../contexts/AuthContext';
+import Button from '../../components/Button';
 
 const GettingStarted = ({ navigation }) => {
-  const [userPhone, setUserPhone] = useState('');
+  const { newUser, setNewUser } = useContext(AuthContext);
   return (
     <View>
       <ImageBackground
@@ -31,17 +33,10 @@ const GettingStarted = ({ navigation }) => {
             >
               COVERS
             </Text>
-            <Text
-              style={{
-                textAlign: 'center',
-                color: '#fff',
-                fontSize: 12,
-                fontWeight: 'bold',
-              }}
-            >
+            <Text style={styles.boldText}>
               (COVID-19 EMERGENCY RESPONSE SOLUTION)
             </Text>
-            <Text style={{ textAlign: 'center', color: '#fff', fontSize: 12 }}>
+            <Text style={styles.text}>
               Join the effort by well-meaning Africans using technology to slow
               down and eventually halt the spread of COVID-19
             </Text>
@@ -51,24 +46,23 @@ const GettingStarted = ({ navigation }) => {
             placeholderTextColor="#000"
             keyboardType="decimal-pad"
             style={styles.textInput}
-            value={userPhone}
+            value={newUser.phoneNumber}
             onChangeText={(text) => {
-              setUserPhone(text);
+              setNewUser({ phoneNumber: text });
             }}
             maxLength={10}
           ></TextInput>
-          {userPhone.length === 10 && userPhone.charAt(0) === '0' ? (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('PinVerification')}
-              style={[styles.btn, { backgroundColor: '#40CA53' }]}
-            >
-              <Text style={styles.btnText}>Get Started</Text>
-            </TouchableOpacity>
+          {newUser.phoneNumber.length === 10 &&
+          newUser.phoneNumber.charAt(0) === '0' ? (
+            <Button
+              pressHandler={() => navigation.navigate('PinVerification')}
+              bgColor="#40CA53"
+              title="Get Started"
+            />
           ) : (
-            <TouchableOpacity style={[styles.btn, { backgroundColor: 'gray' }]}>
-              <Text style={styles.btnText}>Get Started</Text>
-            </TouchableOpacity>
+            <Button bgColor="gray" title="Get Started" />
           )}
+          <Text style={styles.boldText}>Beta 0.1.2</Text>
         </View>
       </ImageBackground>
     </View>
@@ -91,14 +85,11 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 12,
   },
-  btn: {
-    paddingVertical: 15,
-    width: '100%',
-    marginTop: 10,
-  },
-  btnText: {
+  text: { textAlign: 'center', color: '#fff', fontSize: 12 },
+  boldText: {
     textAlign: 'center',
-    fontSize: 12,
     color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
 });

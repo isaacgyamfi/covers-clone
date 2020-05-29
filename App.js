@@ -6,6 +6,7 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import useCachedResources from './hooks/useCachedResources';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import AuthNavigator from './navigation/AuthNavigator';
+import AuthContextProvider from './contexts/AuthContext';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +26,9 @@ export default function App(props) {
               <Stack.Screen name="Root" component={BottomTabNavigator} />
             </Stack.Navigator>
           ) : (
-            <AuthNavigator />
+            <AuthContextProvider>
+              <AuthNavigator />
+            </AuthContextProvider>
           )}
         </NavigationContainer>
       </View>
